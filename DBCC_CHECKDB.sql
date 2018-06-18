@@ -6,6 +6,22 @@ Permissions needed to run: sysadmin
 Notes: 
 	Script written by Sandesh Segu; documented at http://www.sanssql.com/2011/03/t-sql-query-to-find-date-when-was-dbcc.html
 */ 
+
+IF OBJECT_ID('tempdb.dbo.#DBInfo') IS NOT NULL
+BEGIN
+
+	DROP TABLE #DBInfo;
+
+END
+
+IF OBJECT_ID('tempdb.dbo.#Value') IS NOT NULL
+BEGIN
+
+	DROP TABLE #Value;
+
+END
+
+
 CREATE TABLE #DBInfo (
        Id INT IDENTITY(1,1),
        ParentObject VARCHAR(255),
@@ -31,5 +47,3 @@ SELECT DatabaseName,
 LastDBCCCHeckDB_RunDate 
 FROM #Value
 
-DROP TABLE #DBInfo
-DROP TABLE #Value
