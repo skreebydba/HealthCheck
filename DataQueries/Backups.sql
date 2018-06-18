@@ -41,7 +41,7 @@ FROM
 	CASE WHEN BUS.type = 'D' THEN 'Full' WHEN BUS.type = 'I' THEN 'Differential' WHEN BUS.type = 'L' THEN 'Log' WHEN BUS.type = 'F' THEN 'File/Filegroup' WHEN BUS.type IS NULL THEN 'No Backup Taken' ELSE 'Other' END AS backup_type,
 	row_number() OVER (PARTITION BY DB.name, BUS.type ORDER BY BUS.backup_finish_date DESC) AS rw
 	FROM sys.databases DB  
-		LEFT OUTER JOIN  msdb..backupset BUS ON DB.name = BUS.database_name
+		LEFT OUTER JOIN  msdb.dbo.backupset BUS ON DB.name = BUS.database_name
 	WHERE DB.database_id <> 2
 )t
 WHERE t.rw = 1;
