@@ -1,0 +1,20 @@
+USE Concurrency;
+
+SELECT * FROM [hlthchk].[WhoIsActive];
+SELECT * FROM [hlthchk].[ConnectionCounts];
+SELECT * FROM [hlthchk].[AgentJobs];
+SELECT * FROM [hlthchk].[Backups];
+SELECT * FROM [hlthchk].[BufferPoolSize];
+SELECT * FROM [hlthchk].[CacheSize];
+SELECT * FROM [hlthchk].[DatabaseInfo];
+SELECT * FROM [hlthchk].[DbccResults];
+SELECT * FROM [hlthchk].[JobHistory];
+SELECT * FROM [hlthchk].[SysConfig];
+SELECT * FROM [hlthchk].[VlfCounts];
+SELECT * FROM [hlthchk].[VlfCountsByStatus];
+SELECT * FROM [hlthchk].[Logins];
+SELECT * FROM [hlthchk].[OptimizerInfo];
+SELECT * FROM [hlthchk].[PlanCache];
+SELECT * FROM [hlthchk].[IoStats];
+SELECT * FROM [hlthchk].[WaitStats];
+SELECT * FROM [hlthchk].[ServerPrincipals];
