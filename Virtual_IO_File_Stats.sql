@@ -22,6 +22,18 @@ INTO #baseline
 FROM sys.dm_io_virtual_file_stats(NULL, NULL) AS divfs 
 	JOIN sys.master_files AS mf ON mf.database_id = divfs.database_id AND mf.file_id = divfs.file_id 
 
+INSERT INTO Concurrency.hlthchk.IoStats
+(DatabaseName
+,FileType
+,PhysicalName
+,NumOfReads
+,MbRead
+,IoStallReadMs
+,AvgReadStallMs
+,NumOfWrites
+,MbWritten
+,IoStallWriteMs
+,AvgWriteStallMs)
 SELECT databaseName, 
 	RIGHT(physical_name, 3) AS file_type, 
 	physical_name, 

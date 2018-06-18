@@ -55,15 +55,30 @@ FROM sys.master_files MF
 WHERE MF.database_id = DB_ID(''', @databasename, ''')
 GROUP BY MF.database_id, MF.type;')
 
-	PRINT @sqlstr;
-
 	INSERT INTO #freespace
 	EXEC sp_executesql @sqlstr;
 
 	SELECT @loopcount += 1;
 
 END
-	
+
+INSERT INTO Concurrency.hlthchk.DatabaseInfo
+(DatabaseId
+,DBName
+,DBState
+,RecoveryModel
+,DataFileCount
+,DataFileSize_MB
+,DataFileFreeSpace_MB
+,LogFileCount
+,LogFileSize_MB
+,LogFileFreeSpace_MB
+,Log_Larger_Than_Data
+,DBCompatLevel
+,DBCollation
+,Page_Verify_Option_Desc
+,SnapshotIsolation
+,RCSI)	
 SELECT 
 	DB.database_id, 
 	DB.name as DBName, 

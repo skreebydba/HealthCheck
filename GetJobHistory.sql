@@ -59,12 +59,26 @@ order by
 , jh.run_date desc
 go
 
+INSERT INTO Concurrency.hlthchk.JobHistory
+(ServerName
+,JobName
+,JobId
+,RunStatus
+,RunDate
+,RunTime
+,RunDuration
+,SqlMessageId
+,SqlSeverity
+,[Message])
+SELECT server_name,
+job_name,
+job_id,
+run_status,
+run_date,
+run_time,
+run_duration,
+sql_message_id,
+sql_severity,
+[message]
+FROM #jobresults;
 
-SELECT * FROM #jobresults;
---SELECT j.job_name, jh.step_id, jh.step_name, j.run_status, j.run_date, j.run_time, j.run_duration, jh.sql_severity, jh.[message] 
---FROM #jobresults j
---INNER JOIN sysjobhistory jh
---ON jh.job_id = j.job_id
---WHERE j.run_status = 'Failed'
---ORDER BY j.job_name, j.run_date, j.run_time, jh.step_id;
---RIGHT('0' + RTRIM((estimated_completion_time/1000)%60), 2)

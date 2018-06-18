@@ -35,16 +35,17 @@ SELECT @Default_Log_Path =
     ON mf.[database_id] = d.[database_id]   
     WHERE d.[name] = 'zzTempDBForDefaultPath' AND type = 1);
 
---Clean up. Drop de temp database
+--Clean up. Drop the temp database
 
 IF EXISTS(SELECT 1 FROM [master].[sys].[databases] WHERE [name] = 'zzTempDBForDefaultPath')   
 BEGIN  
     DROP DATABASE zzTempDBForDefaultPath   
 END;
 
-EXEC CreateConcurrencyHealthCheckInfrastructure 
+EXEC CreateConcurrencyHealthCheckInfrastructure
 @databasename = N'Concurrency', 
 @schemaname = N'hlthchk', 
 @datafile = @Default_Data_Path, 
 @logfile = @Default_Log_Path,
 @noexec = 0;
+

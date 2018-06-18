@@ -24,7 +24,12 @@ INSERT INTO #Value (DatabaseName) SELECT [Value] FROM #DBInfo WHERE Field IN (''
 UPDATE #Value SET LastDBCCCHeckDB_RunDate=(SELECT TOP 1 [Value] FROM #DBInfo WHERE Field IN (''dbi_dbccLastKnownGood'')) where LastDBCCCHeckDB_RunDate is NULL;
 TRUNCATE TABLE #DBInfo';
 
-SELECT * FROM #Value
+INSERT INTO Concurrency.hlthchk.DbccResults
+(DatabaseName
+,LastDBCCCheckDB_RunDate)
+SELECT DatabaseName,
+LastDBCCCHeckDB_RunDate 
+FROM #Value
 
 DROP TABLE #DBInfo
 DROP TABLE #Value

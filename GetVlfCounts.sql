@@ -30,11 +30,18 @@ GO
 
 EXEC sp_msforeachdb 'USE [?] INSERT #VLF (RecoveryUnitID, FileId, FileSize, StartOffset, FSeqNo, Status, Parity, CreateLSN) EXEC (''DBCC LOGINFO()'')'
 
+INSERT INTO Concurrency.hlthchk.VlfCounts
+(DBName
+,VLFCOUNT)
 SELECT DBName, COUNT(*) AS VLFCount
 FROM #VLF
 GROUP BY DBName
 ORDER BY COUNT(*) DESC;
 
+INSERT INTO Concurrency.hlthchk.VlfCountsByStatus
+(DBName
+,[Status]
+,VLFCountByStatus)
 SELECT DBName, [Status], COUNT(*) AS VLFCountByStatus
 FROM #VLF
 GROUP BY DBName, [Status]

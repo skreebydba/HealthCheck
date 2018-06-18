@@ -75,6 +75,14 @@ SELECT @MinSinceStartup = DATEDIFF(mi, sqlserver_start_time, GETDATE())
 DECLARE @SecSinceStartup BIGINT 
 SET @SecSinceStartup = @MinSinceStartup*60
 
+INSERT INTO Concurrency.hlthchk.WaitStats
+(WaitType
+,SumWaitingTasksCount
+,SumWaitTimeMs
+,SumWaitTimeSec
+,AvgWaitTimeMs
+,PercentTotalTime
+,SumSignalWaitTimeMs)
 SELECT TOP 20 WS.wait_type, 
 	SUM(WS.waiting_tasks_count) AS sum_waiting_tasks_count, 
 	SUM(WS.wait_time_ms) AS sum_wait_time_ms, 

@@ -10,8 +10,14 @@ Modified by:
 Modification:  
 */
 
-select name, sid, type_desc, is_disabled, default_database_name
-from sys.server_principals 
+INSERT INTO Concurrency.hlthchk.ServerPrincipals
+(PrincipalName
+,[SID]
+,TypeDesc
+,IsDisabled
+,DefaultDatabaseName)
+select name, sid, type_desc, is_disabled, ISNULL(default_database_name, 'No Default')
+from sys.server_principals ;
 
 SELECT SRM.role_principal_id, 
 	role.name AS RoleName, 

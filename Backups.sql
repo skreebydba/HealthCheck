@@ -12,6 +12,14 @@ Modified by: Jes Borland
 Modification: added DB.recovery_model_desc and T.RecoveryModel 
 */
 
+INSERT INTO Concurrency.hlthchk.Backups
+(DatabaseName
+,RecoveryModel
+,BackupType
+,BackupStartDate
+,BackupFinishDate
+,BackupTimeSeconds
+,DaysSinceBackup)
 SELECT t.name AS database_name, 
 	t.RecoveryModel, 
 	t.backup_type, 

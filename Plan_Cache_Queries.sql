@@ -14,6 +14,19 @@ from sys.dm_exec_query_optimizer_info
 --SELECT TOP (10) 
 --	REPLACE(SUBSTRING(ST.text, ( QS.statement_start_offset / 2 ) + 1, 100), CHAR(13) + CHAR(10), ' '), 
 
+INSERT INTO Concurrency.hlthchk.PlanCache
+(StatementText
+,ExecutionCount
+,TotalWorkerTimeMs
+,AvgWorkerTimeMs
+,TotalLogicalReads
+,AvgLogicalReads
+,TotalElapsedTimeMs
+,AvgElapsedTimeMs
+,CreationTime
+,LastExecutionTime
+,HoursInCache
+,DatabaseName)
 SELECT TOP (10) 
 	SUBSTRING(ST.text, ( QS.statement_start_offset / 2 ) + 1,
 		( ( CASE statement_end_offset
