@@ -28,11 +28,11 @@ CREATE CLUSTERED INDEX i1_VLF ON #VLF (DBName)
 GO
 
 
-EXEC sp_msforeachdb 'USE ? INSERT #VLF (RecoveryUnitID, FileId, FileSize, StartOffset, FSeqNo, Status, Parity, CreateLSN) EXEC (''DBCC LOGINFO()'')'
+EXEC sp_msforeachdb 'USE [?] INSERT #VLF (RecoveryUnitID, FileId, FileSize, StartOffset, FSeqNo, Status, Parity, CreateLSN) EXEC (''DBCC LOGINFO()'')'
 
 INSERT INTO Concurrency.hlthchk.VlfCounts
 (DBName
-,VlfCount)
+,VLFCOUNT)
 SELECT DBName, COUNT(*) AS VLFCount
 FROM #VLF
 GROUP BY DBName
@@ -40,7 +40,7 @@ ORDER BY COUNT(*) DESC;
 
 INSERT INTO Concurrency.hlthchk.VlfCountsByStatus
 (DBName
-,Status
+,[Status]
 ,VLFCountByStatus)
 SELECT DBName, [Status], COUNT(*) AS VLFCountByStatus
 FROM #VLF

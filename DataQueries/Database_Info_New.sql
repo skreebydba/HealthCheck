@@ -45,7 +45,7 @@ BEGIN
 
 	SELECT @databasename = databasename FROM #databases WHERE RowId = @loopcount;
 
-	SELECT @sqlstr = CONCAT('USE ', @databasename, '
+	SELECT @sqlstr = CONCAT('USE [', @databasename, ']
 SELECT MF.database_id, 
 MF.type,
 COUNT(MF.file_id) AS DataFileCount, 

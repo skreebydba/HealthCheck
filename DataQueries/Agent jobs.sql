@@ -3,25 +3,25 @@ From https://www.mssqltips.com/sqlservertip/2561/querying-sql-server-agent-job-i
 */ 
 
 INSERT INTO Concurrency.hlthchk.AgentJobs
-([JobId], 
-[JobName], 
-[JobOwner], 
-[JobCategory], 
-[JobDescription], 
-[IsEnabled], 
-[JobCreatedOn], 
-[JobLastModifiedOn], 
-[OriginatingServerName], 
-[JobStartStepNo], 
-[JobStartStepName], 
-[IsScheduled], 
-[JobScheduleID], 
-[JobScheduleName], 
-[JobDeletionCrtierion])
+(JobId
+,JobName
+,JobOwner
+,JobCategory
+,JobDescription
+,IsEnabled
+,JobCreatedOn
+,JobLastModifiedOn
+,OriginatingServerName
+,JobStartStepNo
+,JobStartStepName
+,IsScheduled
+,JobScheduleID
+,JobScheduleName
+,JobDeletionCrtierion)
 SELECT 
     [sJOB].[job_id] AS [JobID]
     , [sJOB].[name] AS [JobName]
-    , ISNULL([sDBP].[name], N'N/A') AS [JobOwner]
+    , ISNULL([sDBP].[name], 'No Owner') AS [JobOwner]
     , [sCAT].[name] AS [JobCategory]
     , [sJOB].[description] AS [JobDescription]
     , CASE [sJOB].[enabled]
@@ -38,7 +38,7 @@ SELECT
         ELSE 'Yes'
       END AS [IsScheduled]
     , [sSCH].[schedule_uid] AS [JobScheduleID]
-    , ISNULL([sSCH].[name], N'N/A') AS [JobScheduleName]
+    , ISNULL([sSCH].[name], 'No Schedule') AS [JobScheduleName]
     , CASE [sJOB].[delete_level]
         WHEN 0 THEN 'Never'
         WHEN 1 THEN 'On Success'

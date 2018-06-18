@@ -18,6 +18,13 @@ DATEDIFF(hh, sqlserver_start_time, GETDATE()) AS hours_since_restart,
 DATEDIFF(dd, sqlserver_start_time, GETDATE()) AS days_since_restart 
 FROM sys.dm_os_sys_info; 
 
+IF OBJECT_ID('tempdb.dbo.#WaitsToIgnore') IS NOT NULL
+BEGIN
+
+	DROP TABLE #waitstoignore;
+
+END
+
 CREATE TABLE #WaitsToIgnore
 (wait_type nvarchar(60)) 
 

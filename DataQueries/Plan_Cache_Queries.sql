@@ -9,11 +9,11 @@ Notes:
 */
 
 INSERT INTO Concurrency.hlthchk.OptimizerInfo
-([Counter]
-,[Occurrence]
-,[Value])
+([Counter],
+Occurrence,
+[Value])
 select [counter],
-[occurrence],
+occurrence,
 [value]
 from sys.dm_exec_query_optimizer_info
 

@@ -61,67 +61,68 @@ process {
 
     cls;
 
-    $sqlpath = "$filepath\*.sql";
-    $outputpath = "$filepath\output";
-    $removepath = "$outputpath\*"
+    $sqlpath = "$filepath\DataQueries\";
     $indexpath = "$filepath\IndexQueries"
-    $fileexists = Test-Path $outputpath;
+#    $fileexists = Test-Path $outputpath;
 
-    if($fileexists -eq $false)
+    $procexists = (Invoke-Sqlcmd -ServerInstance $instance -Database master -Query "SELECT 1 FROM sys.objects WHERE [name] = N'CreateConcurrencyHealthCheckInfrastructure';").Column1;
+
+    $procexists;
+
+    $databaseexists = (Invoke-Sqlcmd -ServerInstance $instance -Database master -Query "SELECT 1 FROM sys.databases WHERE [name] = N'Concurrency';").Column1;
+    
+    $databaseexists;
+
+    if($procexists -ne 1)
     {
-        New-Item $outputpath -Type Directory;
-    }
-    else
-    {
-        Remove-Item $removepath -Include *.csv, *.xlsx;
+        Invoke-Sqlcmd -ServerInstance $instance -Database master -InputFile "$filepath\ObjectCreation\CreateCreateConcurrencyHealthCheckInfrastructureProc.sql" -QueryTimeout 120;
     }
 
-    Invoke-Sqlcmd -ServerInstance $instance -InputFile 'C:\HealthCheckInsert\CreateDbAndTables\CreateHealthCheckTables.sql';
+    if($databaseexists -ne 1)
+    {
+        Invoke-SqlCmd -ServerInstance $instance -Database master -InputFile "$filepath\ObjectCreation\ExecCreateConcurrencyHealthCheckObjects.sql" -QueryTimeout 120;
+    }
 
     $databases = Invoke-Sqlcmd -ServerInstance $instance -Query "USE master;  SELECT name FROM sys.databases WHERE database_id > 4;";
     $databasenames = $databases.name;
 
-    $sqlfiles = Get-ChildItem $sqlpath -Include *.sql | Select Name;
-    $indexfiles = Get-ChildItem "$indexpath\*" -Include *.sql | Select Name;
-
-    #Remove-Item $removepath -Include *.csv, *.xlsx;
+    $sqlfiles = Get-ChildItem "$sqlpath\*.sql" -Include *.sql | Select Name;
+   #$indexfiles = Get-ChildItem "$indexpath\*" -Include *.sql | Select Name;
 
     foreach($sqlfile in $sqlfiles)
     {
     
-        $query = $filepath + "\" + $sqlfile.name;
-        $csvfile = $sqlfile.Name -replace ".sql", ".csv"
-        $csvpath = $outputpath + "\" + $csvfile;
+        $query = $sqlpath + "\" + $sqlfile.name;
         $query;
-        Invoke-Sqlcmd -InputFile $query | Export-Csv -Path $csvpath -NoTypeInformation;
+        Invoke-Sqlcmd -ServerInstance $instance -Database master -InputFile $query;
 
     }
 
-    Set-Location $indexpath;
+#    Set-Location $indexpath;
 
-    ForEach ($databasename in $databasenames)
-    {
+#    ForEach ($databasename in $databasenames)
+#    {
         
-        $validpath = Test-Path $databasename;
+#        $validpath = Test-Path $databasename;
 
-        if($validpath -eq $true)
-        {
-            Remove-Item -Path $databasename -Recurse;
-        }
+#        if($validpath -eq $true)
+#        {
+#            Remove-Item -Path $databasename -Recurse;
+#        }
 
-        New-Item -Path $databasename -ItemType "directory" | Out-Null;
+#        New-Item -Path $databasename -ItemType "directory" | Out-Null;
 
-        ForEach ($indexfile in $indexfiles)
-        {
+#        ForEach ($indexfile in $indexfiles)
+#        {
             
-            $csvfilename = $indexfile.name -replace ".sql", ".csv";
-            $csvfilename = $databasename + "_" + $csvfilename;
-            $csvpath = "$indexpath\$databasename\$csvfilename";
+#            $csvfilename = $indexfile.name -replace ".sql", ".csv";
+#            $csvfilename = $databasename + "_" + $csvfilename;
+#            $csvpath = "$indexpath\$databasename\$csvfilename";
             
-            Invoke-Sqlcmd -ServerInstance localhost -Database $databasename -InputFile $indexfile.name | Export-Csv -Path $csvpath -NoTypeInformation;
+#            Invoke-Sqlcmd -ServerInstance localhost -Database $databasename -InputFile $indexfile.name | Export-Csv -Path $csvpath -NoTypeInformation;
     #           $sqlfilename;
-        }
+ #       }
     }
 }
-}
+#}
 

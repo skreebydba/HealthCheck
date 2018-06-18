@@ -43,6 +43,8 @@ BEGIN
 END;
 
 EXEC CreateConcurrencyHealthCheckInfrastructure
+@databasename = N'Concurrency', 
+@schemaname = N'hlthchk', 
 @datafile = @Default_Data_Path, 
 @logfile = @Default_Log_Path,
 @noexec = 0;

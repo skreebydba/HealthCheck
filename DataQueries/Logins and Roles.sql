@@ -16,12 +16,8 @@ INSERT INTO Concurrency.hlthchk.ServerPrincipals
 ,TypeDesc
 ,IsDisabled
 ,DefaultDatabaseName)
-SELECT [name], 
-[sid], 
-[type_desc], 
-is_disabled, 
-ISNULL(default_database_name,N'N/A')
-FROM sys.server_principals;
+select name, sid, type_desc, is_disabled, ISNULL(default_database_name, 'No Default')
+from sys.server_principals ;
 
 INSERT INTO Concurrency.hlthchk.Logins
 (RolePrincipalId
