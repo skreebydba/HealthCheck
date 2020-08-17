@@ -176,8 +176,8 @@ foreach ($instance in $instances)
 ```ps
 
 $rundate = Get-Date -Format yyyyMMdd_HHmmss;
-$workbook = ".\healthcheck.xlsx";
-$newworkbook = ".\healthcheck_$rundate.xlsx";
+$workbook = "C:\Users\fgill\Documents\GitHub\healthcheck\JupyterNotebooks\healthcheck.xlsx";
+$newworkbook = "C:\Users\fgill\Documents\GitHub\healthcheck\JupyterNotebooks\healthcheck_$rundate.xlsx";
 $worksheets = "Sheet1", "Sheet2", "Sheet3", "Sheet4","Sheet5", "Sheet6", "Sheet7", "Sheet8";
 
 $newworksheets = "DatabaseInfo", "VLFInfo", "VlfByStatus", "DateFileInfo", "LogFileInfo", "Configuration", "AgentAlerts", "WaitStats";
@@ -198,8 +198,8 @@ $compress = @{
 }
 Compress-Archive @compress;
 
-<!-- Remove-Item -Path $workbook;
-Remove-Item -Path $newworkbook; -->
+Remove-Item -Path $workbook;
+Remove-Item -Path $newworkbook;
 
 ```
 
